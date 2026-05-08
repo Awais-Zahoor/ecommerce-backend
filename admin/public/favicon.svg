@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Admin Panel">
+  <!-- Premium dark indigo background with rounded corners -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#a5b4fc" stop-opacity="0.8"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <!-- Subtle inner glow -->
+  <rect width="32" height="32" rx="8" fill="white" opacity="0.05"/>
+  <!-- Elegant "A" letter mark -->
+  <text x="16" y="22" font-family="Georgia, serif" font-size="18" font-weight="bold" text-anchor="middle" fill="url(#shine)" letter-spacing="-0.5">A</text>
+  <!-- Small accent dot bottom right -->
+  <circle cx="23" cy="23" r="2.5" fill="#6366f1" opacity="0.85"/>
+  <circle cx="23" cy="23" r="1.2" fill="#c7d2fe"/>
+</svg>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Forever Boutique">
+  <!-- Solid Black Background -->
+  <rect width="32" height="32" rx="8" fill="#000000"/>
+  
+  <!-- Minimalist Geometric Diamond -->
+  <path fill="#ffffff" d="M16 6l8 10-8 10-8-10 8-10z"/>
+</svg>
