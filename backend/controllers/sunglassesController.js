@@ -1,149 +1,117 @@
-import sunglassesModel from "../models/sunglassesModel.js"
+import sunglassesModel from "../models/sunglassesModel.js";
+import { v2 as cloudinary } from 'cloudinary';
 
-// function for add sunglasses (Strict: 3D Model Only)
+// Add Sunglasses (Admin)
 const addSunglasses = async (req, res) => {
     try {
-        const { name, description, price, brand, stock, bestseller } = req.body
+        const { 
+            name, brand, description, price, frameType, 
+            faceAnchors, faceShapeRecommendation, stockQuantity, isBestseller 
+        } = req.body;
 
-        const model3DFile = req.files && req.files.model3D && req.files.model3D[0]
-        
-        if (!model3DFile) {
-            return res.json({ success: false, message: "3D Model (.glb/.gltf) is required for sunglasses" })
+        // Assets extraction
+        const imageFiles = req.files?.images;
+        const deeparFile = req.files?.deeparAsset?.[0];
+
+        // Upload images to Cloudinary
+        const imageUrls = [];
+        if (imageFiles) {
+            for (const file of imageFiles) {
+                const result = await cloudinary.uploader.upload(file.path, { resource_type: 'image' });
+                imageUrls.push({ url: result.secure_url, isPrimary: imageUrls.length === 0 });
+            }
+        }
+
+        // Upload 3D model (.glb) to Cloudinary (raw resource)
+        let deeparAssetUrl = "";
+        if (deeparFile) {
+            const deeparResult = await cloudinary.uploader.upload(deeparFile.path, { resource_type: 'raw' });
+            deeparAssetUrl = deeparResult.secure_url;
         }
 
         const sunglassesData = {
-            name,
-            description,
-            price: Number(price),
-            brand: brand || "Awais Luxe",
-            stock: Number(stock) || 0,
-            inStock: Number(stock) > 0,
-            bestseller: bestseller === "true" || bestseller === true ? true : false,
-            model3D: model3DFile.filename,
-            category: "sunglasses", // Strict category
-            createdAt: Date.now()
-        }
+            name, brand, description, price: Number(price),
+            frameType,
+            images: imageUrls,
+            deeparAssetUrl: deeparAssetUrl,
+            faceAnchors: JSON.parse(faceAnchors || '{}'),
+            faceShapeRecommendation: JSON.parse(faceShapeRecommendation || '[]'),
+            stockQuantity: Number(stockQuantity),
+            isBestseller: isBestseller === 'true'
+        };
 
         const sunglasses = new sunglassesModel(sunglassesData);
-        await sunglasses.save()
+        await sunglasses.save();
 
-        res.json({ success: true, message: "Sunglasses Added (3D Engine Configured)" })
+        res.json({ success: true, message: "Luxury Sunglasses added successfully" });
 
     } catch (error) {
-        console.error("BACKEND ERROR:", error)
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 }
 
-// function for list sunglasses
+// List Sunglasses (Public/Boutique)
 const listSunglasses = async (req, res) => {
     try {
-        const { search, sort, bestseller } = req.query;
-        let query = { category: "sunglasses" }; // Always filter by sunglasses
+        // Optimized query with projection and lean
+        const sunglasses = await sunglassesModel.find({ isActive: true })
+            .select('name brand price images frameType faceShapeRecommendation isBestseller deeparAssetUrl faceAnchors')
+            .lean()
+            .sort({ createdAt: -1 });
 
-        if (search) {
-            query.name = { $regex: search, $options: 'i' };
-        }
-        if (bestseller === 'true') {
-            query.bestseller = true;
-        }
-
-        let sortOrder = { createdAt: -1 };
-        if (sort === 'low-high') sortOrder.price = 1;
-        if (sort === 'high-low') sortOrder.price = -1;
-
-        const sunglasses = await sunglassesModel.find(query).sort(sortOrder);
-        res.json({ success: true, sunglasses })
+        res.json({ success: true, sunglasses });
     } catch (error) {
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 }
 
-// function for removing sunglasses
-const removeSunglasses = async (req, res) => {
-    try {
-        await sunglassesModel.findByIdAndDelete(req.body.id)
-        res.json({ success: true, message: "Sunglasses Removed" })
-    } catch (error) {
-        res.json({ success: false, message: error.message })
-    }
-}
-
-// function for single sunglasses info
+// Get Single Sunglasses Details
 const singleSunglasses = async (req, res) => {
     try {
-        const { sunglassesId } = req.body
-        const sunglasses = await sunglassesModel.findById(sunglassesId)
-        if (!sunglasses || sunglasses.category !== "sunglasses") {
-            return res.json({ success: false, message: "Invalid Sunglasses Product" })
+        const { id } = req.params;
+        const sunglasses = await sunglassesModel.findById(id).lean();
+        
+        if (!sunglasses) {
+            return res.json({ success: false, message: "Product not found" });
         }
-        res.json({ success: true, sunglasses })
+        
+        res.json({ success: true, sunglasses });
     } catch (error) {
-        res.json({ success: false, message: error.message })
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 }
 
-// function for update sunglasses
+// Update Sunglasses
 const updateSunglasses = async (req, res) => {
     try {
-        const { id, name, description, price, brand, stock, bestseller } = req.body
-
-        const model3DFile = req.files && req.files.model3D && req.files.model3D[0]
-        let model3DPath = req.body.model3D // Keep existing if not changed
-
-        if (model3DFile) {
-            model3DPath = model3DFile.filename
+        const { id } = req.params;
+        const updateData = req.body;
+        
+        // Handle nested faceAnchors update if provided
+        if (updateData.faceAnchors && typeof updateData.faceAnchors === 'string') {
+            updateData.faceAnchors = JSON.parse(updateData.faceAnchors);
         }
 
-        const updateData = {
-            name,
-            description,
-            price: Number(price),
-            brand: brand || "Awais Luxe",
-            stock: Number(stock) || 0,
-            inStock: Number(stock) > 0,
-            bestseller: bestseller === "true" || bestseller === true ? true : false,
-            model3D: model3DPath,
-            category: "sunglasses"
-        }
-
-        await sunglassesModel.findByIdAndUpdate(id, updateData);
-        res.json({ success: true, message: "Sunglasses Engine Updated" })
-
+        const updated = await sunglassesModel.findByIdAndUpdate(id, updateData, { new: true });
+        res.json({ success: true, message: "Updated successfully", updated });
     } catch (error) {
-        res.json({ success: false, message: error.message })
-    }
-}
-
-const updateSunglassesStatus = async (req, res) => {
-    try {
-        const { id, field, value } = req.body;
-        await sunglassesModel.findByIdAndUpdate(id, { [field]: value });
-        res.json({ success: true, message: "Status Updated" });
-    } catch (error) {
+        console.log(error);
         res.json({ success: false, message: error.message });
     }
 }
 
-const getRelatedSunglasses = async (req, res) => {
+// Remove Sunglasses
+const removeSunglasses = async (req, res) => {
     try {
-        const { currentId } = req.query;
-        const related = await sunglassesModel.find({ 
-            category: "sunglasses", 
-            _id: { $ne: currentId } 
-        }).limit(5);
-        res.json({ success: true, sunglasses: related });
+        await sunglassesModel.findByIdAndDelete(req.body.id);
+        res.json({ success: true, message: "Masterpiece removed from archive" });
     } catch (error) {
+        console.log(error);
         res.json({ success: false, message: error.message });
     }
 }
 
-export { 
-    listSunglasses, 
-    addSunglasses, 
-    removeSunglasses, 
-    singleSunglasses, 
-    updateSunglasses, 
-    updateSunglassesStatus,
-    getRelatedSunglasses
-}
+export { addSunglasses, listSunglasses, singleSunglasses, updateSunglasses, removeSunglasses };

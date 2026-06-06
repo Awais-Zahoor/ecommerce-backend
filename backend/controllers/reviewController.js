@@ -1,5 +1,4 @@
 import productModel from "../models/productModel.js";
-import sunglassesModel from "../models/sunglassesModel.js";
 import userModel from "../models/userModel.js";
 
 // Add Review
@@ -7,10 +6,8 @@ const addReview = async (req, res) => {
     try {
         const { rating, comment, userId } = req.body;
         const { id } = req.params;
-        const { type } = req.query; // 'product' or 'sunglasses'
 
-        const model = type === 'sunglasses' ? sunglassesModel : productModel;
-        const product = await model.findById(id);
+        const product = await productModel.findById(id);
 
         if (!product) {
             return res.json({ success: false, message: "Product not found" });
@@ -52,10 +49,8 @@ const addReview = async (req, res) => {
 const getReviews = async (req, res) => {
     try {
         const { id } = req.params;
-        const { type } = req.query;
 
-        const model = type === 'sunglasses' ? sunglassesModel : productModel;
-        const product = await model.findById(id);
+        const product = await productModel.findById(id);
 
         if (!product) {
             return res.json({ success: false, message: "Product not found" });
@@ -73,10 +68,8 @@ const getReviews = async (req, res) => {
 const deleteReview = async (req, res) => {
     try {
         const { id, reviewId } = req.params;
-        const { type } = req.query;
 
-        const model = type === 'sunglasses' ? sunglassesModel : productModel;
-        const product = await model.findById(id);
+        const product = await productModel.findById(id);
 
         if (!product) {
             return res.json({ success: false, message: "Product not found" });

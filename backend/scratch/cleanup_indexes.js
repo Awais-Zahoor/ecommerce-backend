@@ -3,7 +3,15 @@ import 'dotenv/config';
 
 async function cleanupIndexes() {
     try {
-        await mongoose.connect(process.env.MONGODB_URI);
+        const uri = process.env.MONGODB_URI || "";
+        let connectionUri;
+        if (uri.includes('?')) {
+            const [base, query] = uri.split('?');
+            connectionUri = base.endsWith('/') ? `${base}e-commerce?${query}` : `${base}/e-commerce?${query}`;
+        } else {
+            connectionUri = uri.endsWith('/') ? `${uri}e-commerce` : `${uri}/e-commerce`;
+        }
+        await mongoose.connect(connectionUri);
         console.log("Connected to MongoDB for cleanup...");
         
         const collections = await mongoose.connection.db.listCollections().toArray();

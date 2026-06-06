@@ -11,8 +11,9 @@ import brandingRouter from "./routes/brandingRoute.js";
 import discountRouter from "./routes/discountRoute.js";
 import subscribeRouter from "./routes/subscribeRoute.js";
 import contactRouter from "./routes/contactRoute.js";
-import sunglassesRouter from "./routes/sunglassesRoute.js";
 import reviewRouter from "./routes/reviewRoutes.js";
+import sunglassesRouter from "./routes/sunglassesRoute.js";
+import tryonRouter from "./routes/tryonRoute.js";
 
 // App Config
 const app = express()
@@ -22,9 +23,19 @@ connectCloudinary()
 
 // middlewares
 app.use(express.json())
-app.use(cors())
-app.use(cors())
-app.use('/models', express.static('uploads/models'))
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://ecommerce-app-new.netlify.app',
+    /\.netlify\.app$/,
+    /\.vercel\.app$/,
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'token'],
+}))
+app.use('/images', express.static('uploads/images'));
 
 // api endpoints
 app.use('/api/user',userRouter)
@@ -36,11 +47,11 @@ app.use('/api/branding',brandingRouter)
 app.use('/api/discount',discountRouter)
 app.use('/api/elite', subscribeRouter)
 app.use('/api/contact', contactRouter)
-app.use('/api/sunglasses', sunglassesRouter)
 app.use('/api/sunglasses', (req, res, next) => { req.query.type = 'sunglasses'; next(); }, reviewRouter)
+app.use('/api/tryon', tryonRouter)
 
 app.get('/',(req,res)=>{
     res.send("API Working")
 })
 
-app.listen(port, ()=>console.log('Server start on Port :'+ port))
+app.listen(port, () => console.log('Server started on Port: ' + port))
