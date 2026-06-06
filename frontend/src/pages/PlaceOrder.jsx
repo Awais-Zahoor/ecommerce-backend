@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 const PlaceOrder = () => {
 
   const [method, setMethod] = useState('cod')
-  const { navigate, backendUrl, token, cartItems, setCartItems, products, sunglasses, isDarkMode, getFinalTotal, removeCoupon, getOrderDiscountSnapshot } = useContext(ShopContext);
+  const { navigate, backendUrl, token, cartItems, setCartItems, products, isDarkMode, getFinalTotal, removeCoupon, getOrderDiscountSnapshot } = useContext(ShopContext);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -36,7 +36,7 @@ const PlaceOrder = () => {
       let orderItems = []
 
       const findAnyProduct = (id) => {
-        return products.find(p => p._id === id) || sunglasses.find(s => s._id === id);
+        return products.find(p => p._id === id);
       };
 
       for (const items in cartItems) {

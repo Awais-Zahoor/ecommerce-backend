@@ -171,13 +171,13 @@ const List = ({ token }) => {
                     </button>
                   </td>
                   <td className='px-6 py-4'>
-                    <div className='flex flex-col items-center gap-2'>
-                      <div className='flex items-center gap-3'>
-                        <button onClick={() => updateStock(item._id, item.stockQuantity - 10)} className='w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200 transition-all' title="-10">-</button>
-                        <span className={`text-sm font-bold w-10 text-center ${item.stockQuantity <= 5 ? 'text-rose-500' : 'text-gray-900 dark:text-white'}`}>{item.stockQuantity}</span>
-                        <button onClick={() => updateStock(item._id, item.stockQuantity + 10)} className='w-8 h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:bg-emerald-50 hover:text-emerald-500 hover:border-emerald-200 transition-all' title="+10">+</button>
+                    <div className='flex flex-col items-center gap-1.5'>
+                      <div className='flex items-center gap-1.5 sm:gap-3'>
+                        <button onClick={() => updateStock(item._id, item.stockQuantity - 10)} className='w-6 h-6 sm:w-8 sm:h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:bg-rose-50 hover:text-rose-500 hover:border-rose-200 transition-all text-xs sm:text-sm' title="-10">-</button>
+                        <span className={`text-xs sm:text-sm font-bold w-6 sm:w-10 text-center ${item.stockQuantity <= 5 ? 'text-rose-500' : 'text-gray-900 dark:text-white'}`}>{item.stockQuantity}</span>
+                        <button onClick={() => updateStock(item._id, item.stockQuantity + 10)} className='w-6 h-6 sm:w-8 sm:h-8 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:bg-emerald-50 hover:text-emerald-500 hover:border-emerald-200 transition-all text-xs sm:text-sm' title="+10">+</button>
                       </div>
-                      <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${item.inStock ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-bold uppercase ${item.inStock ? 'text-emerald-600' : 'text-rose-600'}`}>
                         <span className={`w-1 h-1 rounded-full ${item.inStock ? 'bg-emerald-600' : 'bg-rose-600'}`}></span>
                         {item.inStock ? 'Active' : 'Out'}
                       </div>

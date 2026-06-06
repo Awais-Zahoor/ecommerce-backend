@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
 const SearchBar = () => {
-  const { products, sunglasses, currency, search, setSearch, showSearch, setShowSearch, isDarkMode } = useContext(ShopContext);
+  const { products, currency, search, setSearch, showSearch, setShowSearch, isDarkMode } = useContext(ShopContext);
   const location = useLocation();
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
@@ -20,7 +20,7 @@ const SearchBar = () => {
     if (search.trim() !== '') {
       setShowDropdown(false);
       setShowSearch(false);
-      if (!location.pathname.includes('collection') && !location.pathname.includes('sunglasses')) {
+      if (!location.pathname.includes('collection')) {
         navigate('/collection');
       }
     } else {
@@ -39,10 +39,9 @@ const SearchBar = () => {
     const term = search.toLowerCase();
     
     const matchedProducts = products.filter(item => item.name.toLowerCase().includes(term)).map(item => ({ ...item, type: 'product' }));
-    const matchedSunglasses = sunglasses.filter(item => item.name.toLowerCase().includes(term)).map(item => ({ ...item, type: 'sunglasses' }));
     
-    return [...matchedProducts, ...matchedSunglasses].slice(0, 6);
-  }, [search, products, sunglasses]);
+    return matchedProducts.slice(0, 6);
+  }, [search, products]);
 
   return (
     <AnimatePresence>
@@ -90,7 +89,7 @@ const SearchBar = () => {
                            <div 
                               key={index} 
                               onClick={() => {
-                                 navigate(item.type === 'sunglasses' ? `/sunglasses/${item._id}` : `/product/${item._id}`);
+                                 navigate(`/product/${item._id}`);
                                  setShowSearch(false);
                                  setSearch('');
                               }}
@@ -108,7 +107,7 @@ const SearchBar = () => {
                         ))}
                      </div>
                      <div 
-                        onClick={() => { navigate(location.pathname.includes('sunglasses') ? '/sunglasses' : '/collection'); setShowDropdown(false); setShowSearch(false); }}
+                        onClick={() => { navigate('/collection'); setShowDropdown(false); setShowSearch(false); }}
                         className="p-3 text-center text-xs font-bold text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 bg-slate-50 dark:bg-gray-800/20 cursor-pointer uppercase tracking-widest transition-colors"
                      >
                         Browse Archive

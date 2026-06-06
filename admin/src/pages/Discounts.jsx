@@ -157,14 +157,14 @@ const Discounts = ({ token }) => {
         <div className="min-h-screen pb-20">
 
             {/* ── Header ── */}
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
                 <div>
                     <h1 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Marketing Promotions</h1>
                     <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Marketing / Promotions controls for coupons and automatic offers</p>
                 </div>
                 <button
                     onClick={openCreate}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-indigo-500/20 active:scale-95"
+                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-bold text-sm transition-all shadow-lg shadow-indigo-500/20 active:scale-95 self-start sm:self-auto"
                 >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>
                     New Promotion
@@ -172,7 +172,7 @@ const Discounts = ({ token }) => {
             </div>
 
             {/* ── Stats Row ── */}
-            <div className="grid grid-cols-3 gap-4 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                 {[
                     {
                         label: 'Total Discounts', value: stats.total,
@@ -336,7 +336,7 @@ const Discounts = ({ token }) => {
                             {form.type === 'bogo' && (
                                 <div className="bg-amber-50 dark:bg-amber-900/10 rounded-2xl p-4 border border-amber-200 dark:border-amber-800">
                                     <p className="text-xs font-bold text-amber-700 dark:text-amber-400 uppercase tracking-wider mb-3">BOGO Configuration</p>
-                                    <div className="grid grid-cols-3 gap-3">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                         <div>
                                             <label className={labelCls}>Buy Qty</label>
                                             <input name="bogo.buyQty" value={form.bogoConfig.buyQty} onChange={handleChange} type="number" min="1" className={inputCls} />
@@ -398,8 +398,8 @@ const Discounts = ({ token }) => {
                                 </div>
                             )}
 
-                            {/* Usage limits and minimum requirement */}
-                            <div className="grid grid-cols-3 gap-3">
+                             {/* Usage limits and minimum requirement */}
+                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                 <div>
                                     <label className={labelCls}>Min Cart Value (Rs.)</label>
                                     <input name="minCartValue" value={form.minCartValue} onChange={handleChange} type="number" min="0" className={inputCls} placeholder="0 = no minimum" />
@@ -414,8 +414,8 @@ const Discounts = ({ token }) => {
                                 </div>
                             </div>
 
-                            {/* Scheduling */}
-                            <div className="grid grid-cols-2 gap-3">
+                             {/* Scheduling */}
+                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 <div>
                                     <label className={labelCls}>Offer Starts At</label>
                                     <input name="startsAt" value={form.startsAt} onChange={handleChange} type="datetime-local" className={inputCls} />

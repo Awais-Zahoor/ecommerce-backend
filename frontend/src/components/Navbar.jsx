@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { ShopContext } from '../context/ShopContext';
 import FreeShippingBar from './FreeShippingBar';
 import { IconHeart } from './icons/StoreIcons';
+import { toast } from 'react-toastify';
 
 const Navbar = () => {
 
@@ -44,21 +45,14 @@ const Navbar = () => {
 
                     {/* Branding / Logo */}
                     <Link to='/' className='transition-all duration-300 hover:scale-105 active:scale-95 flex items-center shrink-0 group'>
-                        {branding.logo ? (
-                            <img src={branding.logo} className='w-auto h-7 sm:h-9 md:h-11 object-contain logo-no-dark-change' alt="Awais Mart" />
-                        ) : (
-                            <div className='flex items-center gap-2.5'>
-                                <div className='w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:rotate-12 transition-transform'>
-                                    <span className='text-white font-black text-lg'>A</span>
-                                </div>
-                                <span className='text-base sm:text-xl font-black tracking-[0.2em] text-gray-950 dark:text-white uppercase'>Awais Mart</span>
-                            </div>
+                        {branding.logo && (
+                            <img src={branding.logo} className='w-auto h-7 sm:h-9 md:h-11 object-contain logo-no-dark-change' alt="Logo" />
                         )}
                     </Link>
 
                     {/* Navigation Links - Centered */}
                     <ul className='hidden lg:flex items-center gap-10'>
-                        {['Home', 'Collection', 'Sunglasses', 'AI Studio', 'About', 'Contact'].map((item) => (
+                        {['Home', 'Collection', 'About', 'Contact'].map((item) => (
                             <NavLink 
                                 key={item} 
                                 to={item === 'Home' ? '/' : `/${item.toLowerCase().replace(' ', '-')}`} 
@@ -107,6 +101,11 @@ const Navbar = () => {
                                     {token ? (
                                         <>
                                             <p className='text-[10px] font-bold text-indigo-500 uppercase tracking-widest mb-1'>Account Portal</p>
+                                            <NavLink to='/collection' className='flex flex-col items-center gap-1 group'>
+                                                <p className='text-[11px] font-black tracking-[0.2em] uppercase group-hover:text-black dark:group-hover:text-white transition-colors'>Archive</p>
+                                                <hr className='w-0 group-hover:w-full border-none h-[2px] bg-black dark:bg-white transition-all duration-300' />
+                                            </NavLink>
+
                                             <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-black dark:hover:text-white transition-colors py-1'>Orders</p>
                                             <div className='h-px bg-gray-100 dark:bg-gray-800 my-1' />
                                             <p onClick={logout} className='cursor-pointer hover:text-red-500 transition-colors py-1'>Logout</p>
@@ -212,22 +211,6 @@ const Navbar = () => {
                         </svg>
                         <p className='font-black uppercase tracking-[0.2em] text-[11px] dark:text-gray-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all duration-300'>COLLECTION</p>
                     </NavLink>
-                    <NavLink onClick={() => setVisible(false)} className='group relative py-4 px-6 rounded-2xl overflow-hidden flex items-center gap-4 transition-all hover:bg-indigo-50 dark:hover:bg-indigo-500/5 mb-1' to='/sunglasses'>
-                        <svg className="w-5 h-5 text-slate-400 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                        <p className='font-black uppercase tracking-[0.2em] text-[11px] dark:text-gray-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all duration-300'>SUNGLASSES</p>
-                    </NavLink>
-                    <NavLink onClick={() => setVisible(false)} className='group relative py-4 px-6 rounded-2xl overflow-hidden flex items-center gap-4 transition-all hover:bg-indigo-50 dark:hover:bg-indigo-500/5 mb-1' to='/ai-studio'>
-                        <svg className="w-5 h-5 text-slate-400 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                        </svg>
-                        <p className='font-black uppercase tracking-[0.2em] text-[11px] dark:text-gray-300 group-hover:text-indigo-500 dark:group-hover:text-indigo-400 group-hover:translate-x-1 transition-all duration-300'>AI STUDIO</p>
-                    </NavLink>
-
-
-
-
                     {token && (
                         <NavLink onClick={() => setVisible(false)} className='group relative py-4 px-6 rounded-2xl overflow-hidden flex items-center gap-4 transition-all hover:bg-indigo-50 dark:hover:bg-indigo-500/5 mb-1' to='/orders'>
                             <svg className="w-5 h-5 text-slate-400 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">

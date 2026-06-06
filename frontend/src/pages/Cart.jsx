@@ -7,21 +7,22 @@ import { IconGift, IconTag, IconCheckCircle } from '../components/icons/StoreIco
 
 const Cart = () => {
 
-  const { products, sunglasses, currency, cartItems, updateQuantity, navigate, autoDiscounts, getCartAmount, isDiscountScheduleLive } = useContext(ShopContext);
+  const { products, currency, cartItems, updateQuantity, navigate, autoDiscounts, getCartAmount, isDiscountScheduleLive } = useContext(ShopContext);
 
   const cartAmt = getCartAmount();
 
   const findAnyProduct = (id) => {
-    return products.find(p => p._id === id) || sunglasses.find(s => s._id === id);
+    if (!id) return null;
+    return products?.find(p => p?._id === id);
   };
 
   // Determine which auto discounts are relevant to show as banners
-  const activeBanners = autoDiscounts.filter(ad => {
-    if (!ad.isActive) return false;
-    if (!isDiscountScheduleLive(ad)) return false;
+  const activeBanners = (autoDiscounts || []).filter(ad => {
+    if (!ad?.isActive) return false;
+    if (!isDiscountScheduleLive?.(ad)) return false;
     if (ad.type === 'free_shipping') return true; // progress toward this rule
     if (ad.type === 'auto_category') {
-      return Object.keys(cartItems).some(itemId => {
+      return Object.keys(cartItems || {}).some(itemId => {
         const p = findAnyProduct(itemId);
         return p && p.category?.toLowerCase() === ad.categoryTarget?.toLowerCase();
       });
@@ -30,7 +31,7 @@ const Cart = () => {
   });
 
   const cartData = React.useMemo(() => {
-    if (products.length === 0 && sunglasses.length === 0) return [];
+    if ((products?.length || 0) === 0) return [];
     const tempData = [];
     for (const items in cartItems) {
       for (const item in cartItems[items]) {
@@ -44,7 +45,7 @@ const Cart = () => {
       }
     }
     return tempData;
-  }, [cartItems, products, sunglasses]);
+  }, [cartItems, products]);
 
   return (
     <div className='border-t dark:border-gray-800 pt-10 sm:pt-14 transition-all duration-500'>
@@ -57,13 +58,13 @@ const Cart = () => {
       {activeBanners.length > 0 && (
         <div className='flex flex-col gap-2 mb-8'>
           {activeBanners.map(ad => {
-            const isFS = ad.type === 'free_shipping';
-            const threshold = ad.minCartValue || 0;
+            const isFS = ad?.type === 'free_shipping';
+            const threshold = ad?.minCartValue || 0;
             const remaining = Math.max(threshold - cartAmt, 0);
             const qualified = cartAmt >= threshold;
             return (
               <motion.div
-                key={ad._id}
+                key={ad?._id}
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className={`flex items-center gap-3 px-4 py-3 rounded-2xl border text-sm font-semibold ${
@@ -89,8 +90,8 @@ const Cart = () => {
                   {isFS
                     ? qualified
                       ? `You've unlocked free shipping on this order.`
-                      : `Add ${currency}${remaining.toLocaleString()} more for free shipping (${ad.name}).`
-                    : `${ad.value}% off auto-applied on "${ad.categoryTarget}" items.`
+                      : `Add ${currency}${remaining.toLocaleString()} more for free shipping (${ad?.name}).`
+                    : `${ad?.value}% off auto-applied on "${ad?.categoryTarget}" items.`
                   }
                 </span>
               </motion.div>
@@ -106,8 +107,19 @@ const Cart = () => {
           <AnimatePresence mode='popLayout'>
             {cartData.length > 0 ? (
               cartData.map((item, index) => {
-                const productData = findAnyProduct(item._id);
+                const productData = findAnyProduct(item?._id);
+                
+                // Debugging Support
+                console.log("Cart Item:", item);
+                console.log("Resolved Product Data:", productData);
+
                 if (!productData) return null;
+
+                // Robust Data Normalization
+                const productImage = productData?.image?.[0] || productData?.images?.[0] || '/placeholder.png';
+                const productName = productData?.name || 'Unknown Product';
+                const productPrice = productData?.price || 0;
+                const productBrand = productData?.brand || 'Premium Collection';
 
                 return (
                   <motion.div 
@@ -116,23 +128,23 @@ const Cart = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    key={`${item._id}-${item.size}`} 
+                    key={`${item?._id}-${item?.size}`} 
                     className='group relative bg-white dark:bg-gray-900/40 p-4 sm:p-5 mb-4 rounded-[2rem] border border-gray-100 dark:border-gray-800 hover:border-black dark:hover:border-white transition-all shadow-sm hover:shadow-md'
                   >
                     <div className='flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6'>
                       {/* Product Image */}
                       <div className='relative w-full sm:w-28 h-48 sm:h-28 flex-shrink-0 overflow-hidden rounded-2xl bg-gray-50 dark:bg-gray-800 border dark:border-gray-700'>
-                        <img className='w-full h-full object-cover transition-transform group-hover:scale-110' src={productData.image[0]} alt={productData.name} />
+                        <img className='w-full h-full object-cover transition-transform group-hover:scale-110' src={productImage} alt={productName} />
                       </div>
 
                       {/* Product Info */}
                       <div className='flex-1 w-full flex flex-col justify-between'>
                         <div className='text-center sm:text-left'>
-                          <p className='text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] mb-1'>{productData.brand || 'Premium Collection'}</p>
-                          <h3 className='text-lg sm:text-xl font-black dark:text-white uppercase tracking-tight leading-tight'>{productData.name}</h3>
+                          <p className='text-[10px] font-black text-orange-500 uppercase tracking-[0.2em] mb-1'>{productBrand}</p>
+                          <h3 className='text-lg sm:text-xl font-black dark:text-white uppercase tracking-tight leading-tight'>{productName}</h3>
                           <div className='flex items-center justify-center sm:justify-start gap-4 mt-2'>
-                            <p className='text-xl font-black text-slate-900 dark:text-slate-100'>{currency}{productData.price.toLocaleString()}</p>
-                            <span className='px-4 py-1 text-[10px] font-black bg-slate-100 dark:bg-slate-800 rounded-full border dark:border-gray-700 uppercase tracking-widest'>Size: {item.size}</span>
+                            <p className='text-xl font-black text-slate-900 dark:text-slate-100'>{currency}{productPrice.toLocaleString()}</p>
+                            <span className='px-4 py-1 text-[10px] font-black bg-slate-100 dark:bg-slate-800 rounded-full border dark:border-gray-700 uppercase tracking-widest'>Size: {item?.size || 'N/A'}</span>
                           </div>
                         </div>
 
@@ -140,14 +152,14 @@ const Cart = () => {
                         <div className='flex items-center justify-between mt-6 sm:mt-4 bg-gray-50/50 dark:bg-white/[0.02] p-2 rounded-2xl border dark:border-gray-800 sm:border-transparent'>
                           <div className='flex items-center bg-white dark:bg-gray-800 rounded-xl p-1 shadow-sm border dark:border-gray-700'>
                             <button 
-                              onClick={() => item.quantity > 1 && updateQuantity(item._id, item.size, item.quantity - 1)}
+                              onClick={() => (item?.quantity || 0) > 1 && updateQuantity(item?._id, item?.size, item?.quantity - 1)}
                               className='w-10 h-10 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-all active:scale-90 font-black dark:text-white'
                             >
                               -
                             </button>
-                            <span className='w-10 text-center font-black dark:text-white'>{item.quantity}</span>
+                            <span className='w-10 text-center font-black dark:text-white'>{item?.quantity || 0}</span>
                             <button 
-                              onClick={() => updateQuantity(item._id, item.size, item.quantity + 1)}
+                              onClick={() => updateQuantity(item?._id, item?.size, (item?.quantity || 0) + 1)}
                               className='w-10 h-10 flex items-center justify-center hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-all active:scale-90 font-black dark:text-white'
                             >
                               +
@@ -155,7 +167,7 @@ const Cart = () => {
                           </div>
                           
                           <button 
-                            onClick={() => updateQuantity(item._id, item.size, 0)}
+                            onClick={() => updateQuantity(item?._id, item?.size, 0)}
                             className='p-4 bg-red-50 hover:bg-red-500 text-red-500 hover:text-white rounded-xl transition-all active:scale-90 group/btn shadow-sm'
                           >
                             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

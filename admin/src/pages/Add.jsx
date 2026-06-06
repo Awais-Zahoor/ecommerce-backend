@@ -130,13 +130,13 @@ const Add = ({ token }) => {
       </div>
 
       {/* Pro Tab Switcher */}
-      <div className='flex items-center gap-2 mb-8 bg-gray-50/50 dark:bg-gray-800/30 p-1.5 rounded-[2rem] w-fit border border-gray-100 dark:border-gray-800/50'>
+      <div className='flex flex-wrap md:flex-nowrap items-center gap-2 mb-8 bg-gray-50/50 dark:bg-gray-800/30 p-1.5 rounded-[1.5rem] md:rounded-[2rem] w-full md:w-fit border border-gray-100 dark:border-gray-800/50'>
         {tabs.map((tab) => (
           <button
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-3 px-8 py-3.5 rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all duration-500 ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'}`}
+            className={`flex-1 md:flex-none flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-8 py-2.5 sm:py-3.5 rounded-[1.2rem] md:rounded-[1.5rem] text-[10px] font-black uppercase tracking-widest transition-all duration-500 ${activeTab === tab.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-500/20' : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200'}`}
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d={tab.icon} />
@@ -146,13 +146,13 @@ const Add = ({ token }) => {
         ))}
       </div>
 
-      <form onSubmit={onSubmitHandler} className='admin-card p-8 md:p-12 border-none shadow-2xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-gray-900 rounded-[3rem]'>
+      <form onSubmit={onSubmitHandler} className='admin-card p-5 sm:p-8 md:p-12 border-none shadow-2xl shadow-gray-200/50 dark:shadow-none bg-white dark:bg-gray-900 rounded-[2rem] sm:rounded-[3rem]'>
         
-        <div className='flex flex-col lg:flex-row gap-16'>
+        <div className='flex flex-col lg:flex-row gap-8 lg:gap-16'>
           
           {/* Sticky Visual Assets (Right side on Desktop) */}
           <div className='lg:w-1/3 order-1 lg:order-2'>
-            <div className='lg:sticky lg:top-10 space-y-8 bg-gray-50/50 dark:bg-gray-800/20 p-8 rounded-[2.5rem] border border-gray-100 dark:border-gray-800/50'>
+            <div className='lg:sticky lg:top-10 space-y-6 sm:space-y-8 bg-gray-50/50 dark:bg-gray-800/20 p-5 sm:p-8 rounded-[2rem] sm:rounded-[2.5rem] border border-gray-100 dark:border-gray-800/50'>
               <div className='flex items-center gap-3 mb-2'>
                 <span className='w-1.5 h-4 bg-indigo-600 rounded-full'></span>
                 <p className='text-[10px] font-black text-gray-400 uppercase tracking-[0.25em]'>Live Preview Assets</p>
@@ -162,7 +162,7 @@ const Add = ({ token }) => {
                 {[image1, image2, image3, image4].map((img, idx) => (
                   <div key={idx} className='group relative'>
                     <label htmlFor={`image${idx+1}`} className='cursor-pointer'>
-                      <div className='aspect-square border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-[2rem] flex items-center justify-center overflow-hidden hover:border-indigo-500 hover:bg-indigo-50/10 transition-all bg-white dark:bg-gray-900/50 shadow-sm'>
+                      <div className='aspect-square border-2 border-dashed border-gray-100 dark:border-gray-800 rounded-[1.2rem] sm:rounded-[2rem] flex items-center justify-center overflow-hidden hover:border-indigo-500 hover:bg-indigo-50/10 transition-all bg-white dark:bg-gray-900/50 shadow-sm'>
                         <img 
                           className='w-full h-full object-cover transition-all duration-700 group-hover:scale-110' 
                           src={!img ? assets.upload_area : URL.createObjectURL(img)} 
@@ -223,7 +223,7 @@ const Add = ({ token }) => {
                   <textarea onChange={(e) => setDescription(e.target.value)} value={description} className='w-full bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 rounded-2xl px-6 py-5 text-sm font-bold focus:ring-4 focus:ring-indigo-500/10 transition-all dark:text-white outline-none min-h-[140px]' placeholder='Describe the craftsmanship...' required />
                 </div>
 
-                <div className='grid grid-cols-2 gap-8'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8'>
                   <div className='space-y-2'>
                     <label className='text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1'>Department</label>
                     <select onChange={(e) => setCategory(e.target.value)} className='w-full bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100 dark:border-gray-800 rounded-2xl px-6 py-4 text-xs font-black uppercase tracking-widest outline-none cursor-pointer appearance-none'>
@@ -317,9 +317,9 @@ const Add = ({ token }) => {
 
                 <div className='space-y-6'>
                   <label className='text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1'>Size Configuration</label>
-                  <div className='flex flex-wrap gap-3'>
+                  <div className='flex flex-wrap gap-2 sm:gap-3'>
                     {["S", "M", "L", "XL", "XXL"].map((sz) => (
-                      <div key={sz} onClick={() => setSizes(prev => prev.includes(sz) ? prev.filter(item => item != sz) : [...prev, sz])} className={`px-8 py-4 rounded-2xl cursor-pointer font-black transition-all border text-[10px] uppercase tracking-widest active:scale-90 ${sizes.includes(sz) ? "bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-500/20" : "bg-white dark:bg-gray-800/30 border-gray-100 dark:border-gray-800 text-gray-400 hover:border-indigo-300"}`}>{sz}</div>
+                      <div key={sz} onClick={() => setSizes(prev => prev.includes(sz) ? prev.filter(item => item != sz) : [...prev, sz])} className={`px-5 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl cursor-pointer font-black transition-all border text-[10px] uppercase tracking-widest active:scale-90 ${sizes.includes(sz) ? "bg-indigo-600 border-indigo-600 text-white shadow-xl shadow-indigo-500/20" : "bg-white dark:bg-gray-800/30 border-gray-100 dark:border-gray-800 text-gray-400 hover:border-indigo-300"}`}>{sz}</div>
                     ))}
                   </div>
                 </div>
@@ -328,9 +328,9 @@ const Add = ({ token }) => {
                   <label className='text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1'>Color Palette</label>
                   <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
                     <div className='p-6 bg-gray-50/50 dark:bg-gray-800/30 rounded-3xl border border-gray-100 dark:border-gray-800 space-y-6'>
-                      <div className='flex gap-4 items-center'>
+                      <div className='flex flex-wrap sm:flex-nowrap gap-3 sm:gap-4 items-center'>
                          <input type="color" value={currentColor} onChange={(e) => setCurrentColor(e.target.value)} className='w-12 h-12 rounded-xl cursor-pointer border-none bg-transparent appearance-none' />
-                         <div className='flex-1'>
+                         <div className='flex-1 min-w-[80px]'>
                            <p className='text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1'>Selected Hex</p>
                            <p className='text-xs font-black uppercase dark:text-white'>{currentColor}</p>
                          </div>

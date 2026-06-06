@@ -206,9 +206,9 @@ const Collection = () => {
       
 
 
-      <div className='flex flex-col lg:flex-row gap-12 border-t dark:border-gray-800 pt-10 relative'>
+      <div className='flex flex-col lg:flex-row gap-8 lg:gap-12 border-t dark:border-gray-800 pt-10 relative'>
 
-      <div className='lg:min-w-[340px] lg:sticky lg:top-28 h-fit'>
+      <div className='lg:min-w-[300px] xl:min-w-[340px] lg:sticky lg:top-28 h-fit'>
         <div className='bg-white dark:bg-gray-950 lg:border-[3px] border-indigo-100/80 dark:border-indigo-500/20 rounded-[2.5rem] p-6 space-y-8 shadow-[0_10px_40px_rgba(0,0,0,0.02)] dark:shadow-none max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar relative'>
           
           {/* Subtle Color Accent */}
@@ -237,7 +237,7 @@ const Collection = () => {
           </div>
         )}
         
-        <div className={`${showFilter ? 'block' : 'hidden'} lg:block space-y-6 animate-reveal pb-20`}>
+        <div className={`${showFilter ? 'block' : 'hidden'} lg:block space-y-6 animate-reveal pb-6 lg:pb-20`}>
           
           {/* Availability Section */}
           <div className='bg-gray-50/50 dark:bg-white/[0.02] p-6 rounded-[2rem] border border-gray-100 dark:border-gray-800/50'>
@@ -452,7 +452,7 @@ const Collection = () => {
           </div>
 
           {/* Product Grid */}
-          <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 xl:gap-8'>
+          <div className='grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 xl:gap-8'>
             {currentProducts.map((item) => (
               <ProductItem key={item._id} name={item.name} id={item._id} price={item.price} image={item.image} inStock={item.inStock}/>
             ))}

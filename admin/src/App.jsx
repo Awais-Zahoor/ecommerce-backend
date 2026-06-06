@@ -15,14 +15,12 @@ import Edit from './pages/Edit';
 import Discounts from './pages/Discounts';
 import Subscribers from './pages/Subscribers';
 import Inquiries from './pages/Inquiries';
-import AddSunglasses from './pages/AddSunglasses';
-import ListSunglasses from './pages/ListSunglasses';
-import EditSunglasses from './pages/EditSunglasses';
 import Login from './components/Login';
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const [token, setToken] = useState(() => {
     return localStorage.getItem('token') || sessionStorage.getItem('token') || '';
@@ -93,11 +91,18 @@ const App = () => {
       <ToastContainer theme={isDarkMode ? 'dark' : 'light'} />
       {token === ""
         ? <Login setToken={setToken} />
-        : <div className='flex flex-col h-screen overflow-hidden'>
-            <Navbar setToken={setToken} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} logo={branding.logo} />
+        : <div className='flex flex-col h-screen overflow-hidden relative'>
+            <Navbar setToken={setToken} isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode} logo={branding.logo} setShowSidebar={setShowSidebar} />
             
-            <div className='flex flex-1 overflow-hidden'>
-              <Sidebar />
+            <div className='flex flex-1 overflow-hidden relative'>
+              {/* Mobile Sidebar Backdrop Overlay */}
+              {showSidebar && (
+                <div 
+                  onClick={() => setShowSidebar(false)} 
+                  className='fixed inset-0 bg-black/40 backdrop-blur-sm z-30 lg:hidden transition-opacity duration-300'
+                />
+              )}
+              <Sidebar showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
               <div className='flex-1 overflow-y-auto px-4 sm:px-10 py-8 scroll-smooth no-scrollbar lg:px-16 pb-24'>
                 <div className='max-w-[1600px] mx-auto'>
                   <Routes>
@@ -111,9 +116,7 @@ const App = () => {
                     <Route path='/promotions' element={<Discounts token={token} />} />
                     <Route path='/subscribers' element={<Subscribers token={token} />} />
                     <Route path='/inquiries' element={<Inquiries token={token} />} />
-                    <Route path='/add-sunglasses' element={<AddSunglasses token={token} />} />
-                    <Route path='/list-sunglasses' element={<ListSunglasses token={token} />} />
-                    <Route path='/edit-sunglasses/:id' element={<EditSunglasses token={token} />} />
+
                   </Routes>
                 </div>
               </div>

@@ -156,13 +156,13 @@ const Orders = ({ token }) => {
                 </div>
 
                 {/* Status & Settlement */}
-                <div className='flex flex-col justify-between gap-8 text-right'>
+                <div className='flex flex-col justify-between gap-8 text-left lg:text-right'>
                   <div className='space-y-4'>
-                    <div className='flex flex-col items-end gap-1'>
+                    <div className='flex flex-col items-start lg:items-end gap-1'>
                       <p className='text-[10px] font-black text-gray-400 uppercase tracking-widest'>Order Total</p>
                       <h4 className='text-4xl font-black text-gray-900 dark:text-white tracking-tighter'>{currency}{order.amount.toLocaleString()}</h4>
                     </div>
-                    <div className='flex flex-col items-end gap-2'>
+                    <div className='flex flex-col items-start lg:items-end gap-2'>
                        <div className='flex items-center gap-2 px-3 py-1 bg-gray-50 dark:bg-gray-800 rounded-full border border-gray-100 dark:border-gray-800'>
                          <span className={`w-2 h-2 rounded-full ${order.payment ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]'}`}></span>
                          <span className='text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400'>{order.payment ? 'Verified Payment' : 'Pending Verification'}</span>
@@ -172,7 +172,7 @@ const Orders = ({ token }) => {
                   </div>
 
                   <div className='space-y-3 mt-auto'>
-                    <p className='text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-2'>Update Status</p>
+                    <p className='text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mb-2 lg:text-right'>Update Status</p>
                     <div className='relative'>
                       <select 
                         onChange={(event) => statusHandler(event, order._id)} 

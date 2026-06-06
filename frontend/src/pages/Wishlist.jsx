@@ -6,8 +6,8 @@ import { IconHeartEmptyState } from '../components/icons/StoreIcons';
 
 const Wishlist = () => {
 
-  const { products, sunglasses, wishlist } = useContext(ShopContext);
-  const wishlistProducts = [...products, ...sunglasses].filter(item => wishlist.includes(item._id));
+  const { products, wishlist } = useContext(ShopContext);
+  const wishlistProducts = products.filter(item => wishlist.includes(item._id));
 
   return (
     <div className='pt-14 transition-colors duration-500'>

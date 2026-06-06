@@ -10,9 +10,7 @@ import Orders from './pages/Orders'
 import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Wishlist from './pages/Wishlist'
-import StudioTryOn from './pages/StudioTryOn'
-const Sunglasses = React.lazy(() => import('./pages/Sunglasses'));
-const SunglassesProduct = React.lazy(() => import('./pages/SunglassesProduct'));
+
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
@@ -25,13 +23,14 @@ import OutfitBuilder from './pages/OutfitBuilder'
 import { ShopContext } from './context/ShopContext'
 import WhatsAppButton from './components/WhatsAppButton'
 
+
 const App = () => {
   const { isDarkMode } = useContext(ShopContext);
 
 
   return (
     <div className='bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-500 min-h-screen'>
-      <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] pt-20 sm:pt-24'>
+      <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw] pt-24 sm:pt-28 md:pt-32'>
 
         <ToastContainer theme={isDarkMode ? 'dark' : 'light'} />
         <ScrollToTop />
@@ -45,25 +44,17 @@ const App = () => {
           <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/product/:productId' element={<Product />} />
+
           <Route path='/cart' element={<Cart />} />
           <Route path='/wishlist' element={<Wishlist />} />
-          <Route path='/sunglasses' element={
-            <React.Suspense fallback={<div className='h-[60vh] flex items-center justify-center'><div className='animate-spin h-8 w-8 border-2 border-indigo-600 rounded-full border-t-transparent'></div></div>}>
-              <Sunglasses />
-            </React.Suspense>
-          } />
-          <Route path='/sunglasses/:productId' element={
-            <React.Suspense fallback={<div className='h-[60vh] flex items-center justify-center'><div className='animate-spin h-8 w-8 border-2 border-indigo-600 rounded-full border-t-transparent'></div></div>}>
-              <SunglassesProduct />
-            </React.Suspense>
-          } />
           <Route path='/login' element={<Login />} />
           <Route path='/place-order' element={<PlaceOrder />} />
           <Route path='/orders' element={<Orders />} />
           <Route path='/outfit-builder' element={<OutfitBuilder />} />
-          <Route path='/ai-studio' element={<StudioTryOn />} />
+
           <Route path='/about' element={<About />} />
           <Route path='/verify' element={<Verify />} />
+
         </Routes>
         <Footer />
       </div>

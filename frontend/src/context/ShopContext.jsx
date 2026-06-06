@@ -34,7 +34,7 @@ const ShopContextProvider = (props) => {
      const [autoDiscounts, setAutoDiscounts] = useState([])   // free_shipping / auto_category
      const navigate = useNavigate();
 
-     // Helper to find any product (clothing or sunglasses)
+     // Helper to find any product (clothing or luxury eyewear)
      const findAnyProduct = (itemId) => {
           return products.find(p => p._id === itemId) || sunglasses.find(s => s._id === itemId);
      }
@@ -211,12 +211,14 @@ const ShopContextProvider = (props) => {
           try {
                const response = await axios.get(backendUrl + '/api/sunglasses/list')
                if (response.data.success) {
-                    setSunglasses(response.data.sunglasses.reverse())
+                    setSunglasses(response.data.sunglasses)
                }
           } catch (error) {
-               console.log(error)
+               console.log("Eyewear Fetch Error:", error)
           }
      }
+
+
 
      const getBrandingData = async () => {
           try {

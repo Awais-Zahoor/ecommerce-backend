@@ -126,20 +126,20 @@ const handleResponse = async (id) => {
                     <p className='text-sm font-bold text-indigo-500 uppercase tracking-widest mt-1'>Customer Messages & Support</p>
                 </div>
 
-                <div className='flex items-center gap-4'>
-                    <div className='relative'>
+                <div className='flex flex-wrap sm:flex-nowrap items-center gap-3 w-full md:w-auto'>
+                    <div className='relative w-full sm:w-64'>
                         <input 
                             type="text" 
                             placeholder="Search by name or email..." 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className='bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl px-5 py-3 text-sm focus:border-indigo-500 outline-none w-64 shadow-sm font-bold'
+                            className='bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl px-5 py-3 text-sm focus:border-indigo-500 outline-none w-full shadow-sm font-bold'
                         />
                     </div>
                     <select 
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className='bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider focus:border-indigo-500 outline-none shadow-sm'
+                        className='bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl px-4 py-3 text-sm font-black uppercase tracking-wider focus:border-indigo-500 outline-none shadow-sm w-full sm:w-auto'
                     >
                         <option value="">All Status</option>
                         <option value="pending">Pending</option>

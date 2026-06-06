@@ -21,7 +21,7 @@ const MoonIcon = () => (
   </svg>
 );
 
-const Navbar = ({setToken, isDarkMode, setIsDarkMode, logo}) => {
+const Navbar = ({setToken, isDarkMode, setIsDarkMode, logo, setShowSidebar}) => {
 
   const toggleDark = () => {
     const next = !isDarkMode;
@@ -38,6 +38,17 @@ const Navbar = ({setToken, isDarkMode, setIsDarkMode, logo}) => {
     <div className='flex items-center py-3 px-6 lg:px-10 justify-between bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-50 transition-colors'>
       {/* Left: Logo + Badge */}
       <div className='flex items-center gap-4'>
+        {/* Mobile menu toggle */}
+        <button
+          onClick={() => setShowSidebar(prev => !prev)}
+          className='lg:hidden p-1.5 text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 focus:outline-none transition-colors mr-1'
+          title="Toggle Navigation Menu"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
         <img
           src={logo || assets.logo}
           className="h-9 w-auto object-contain logo-no-dark-change"

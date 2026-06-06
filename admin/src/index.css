@@ -23,6 +23,10 @@
 }
 
 /* ── Light Mode (Default) ── */
+html, body {
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--bg-light);
     color: var(--text-light);

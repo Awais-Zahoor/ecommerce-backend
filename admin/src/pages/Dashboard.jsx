@@ -193,7 +193,7 @@ const Dashboard = ({ token }) => {
                 </div>
             </div>
             
-            <div className='h-[400px] w-full'>
+            <div className='h-[250px] sm:h-[350px] md:h-[400px] w-full'>
                 <Line options={chartOptions} data={chartData} />
             </div>
         </div>

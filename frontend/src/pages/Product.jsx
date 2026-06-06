@@ -40,20 +40,20 @@ const Product = () => {
 
         {/* -------------Product Images ----------------*/}
         <div className='flex-1 flex flex-col-reverse gap-4 lg:flex-row font-medium'>
-          <div className='flex lg:flex-col overflow-x-auto lg:overflow-y-auto no-scrollbar justify-between lg:justify-normal lg:w-[18.7%] w-full gap-3'>
+          <div className='flex lg:flex-col overflow-x-auto lg:overflow-y-auto no-scrollbar justify-start lg:justify-normal lg:w-[18.7%] w-full gap-2 sm:gap-3 pb-1 lg:pb-0'>
             {
               productData.image.map((item, index) => (
                 <div 
                   key={index} 
                   onClick={() => setImage(item)}
-                  className={`relative cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border-2 ${image === item ? 'border-indigo-500 scale-95 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'} w-[22%] lg:w-full flex-shrink-0 aspect-square bg-gray-50 dark:bg-gray-900 `}
+                  className={`relative cursor-pointer transition-all duration-300 rounded-xl overflow-hidden border-2 ${image === item ? 'border-indigo-500 scale-95 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'} w-14 sm:w-16 lg:w-full flex-shrink-0 aspect-square bg-gray-50 dark:bg-gray-900 `}
                 >
                   <img src={item} className='w-full h-full object-cover object-center' alt="" loading='lazy' />
                 </div>
               ))
             }
           </div>
-          <div className='w-full lg:w-[80%] group relative overflow-hidden rounded-[2rem] bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 border dark:border-gray-800 shadow-2xl aspect-[4/5]'>
+          <div className='w-full lg:w-[80%] group relative overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 border dark:border-gray-800 shadow-2xl aspect-[3/4] sm:aspect-[4/5]'>
             {image ? (
               <img className='w-full h-full object-cover object-center transition-all duration-700 hover:scale-105' src={image} alt="" />
             ) : (
