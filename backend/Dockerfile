@@ -11,8 +11,8 @@ RUN npm install --production
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port (matches process.env.PORT || 4000 in server.js)
-EXPOSE 4000
+# Expose the port (matches process.env.PORT || 8080 in server.js)
+EXPOSE 8080
 
 # Start the application
 CMD ["node", "server.js"]
